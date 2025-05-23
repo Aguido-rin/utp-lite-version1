@@ -1,0 +1,39 @@
+---
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import { saveSchedule, getSchedule } from '../utils/storage';
+
+const loadSchedule = async () => {
+  const q = query(collection(db, 'schedules'), where('userId', '==', 'test-user-id'));
+  const querySnapshot = await getDocs(q);
+  const data = [];
+  querySnapshot.forEach(doc => data.push(doc.data()));
+  // Guardar en localStorage
+  saveSchedule(data);
+  return data;
+};
+
+const schedule = await loadSchedule();
+const localSchedule = getSchedule();
+---
+
+<div class="schedule-container">
+  <h2>Horario de Clases</h2>
+  {localSchedule.length === 0 ? (
+    <p>No tienes horario guardado.</p>
+  ) : (
+    <div class="schedule-list">
+      {localSchedule.map((item, i) => (
+        <div key={i} class="schedule-item">
+          <strong>{item.title}</strong>
+          <br/>
+          {item.time}
+          <br/>
+          <a href={item.zoomLink} target="_blank" rel="noopener noreferrer">Zoom</a>
+          <hr />
+        </div>
+      ))}
+    </div>
+  )}
+  <button onclick="window.history.back()">Atrás</button>
+</div>
