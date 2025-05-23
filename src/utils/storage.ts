@@ -3,15 +3,18 @@ export const saveSchedule = (schedule: any) => {
 };
 
 export const getSchedule = () => {
-  return JSON.parse(localStorage.getItem('schedule')) || [];
+  const schedule = localStorage.getItem('schedule');
+  return schedule ? JSON.parse(schedule) : [];
 };
 
 export const saveTask = (task: any) => {
-  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  tasks.push(task);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  const tasks = localStorage.getItem('tasks');
+  const parsedTasks = tasks ? JSON.parse(tasks) : [];
+  parsedTasks.push(task);
+  localStorage.setItem('tasks', JSON.stringify(parsedTasks));
 };
 
 export const getTasks = () => {
-  return JSON.parse(localStorage.getItem('tasks')) || [];
+  const tasks = localStorage.getItem('tasks');
+  return tasks ? JSON.parse(tasks) : [];
 };
